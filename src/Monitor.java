@@ -6,66 +6,64 @@ public class Monitor {
 
     static class NonSynchronizationMonitor {
 
-        public void taskA(){
-            try{
-                for(int i=1; i<=5; i++){
+        public void taskA() {
+            try {
+                for (int i = 1; i <= 5; i++) {
                     System.out.println(Thread.currentThread().getName() + ": " + i);
                     Thread.sleep(20L);
                 }
-            }
-            catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 System.out.println("Error.");
             }
         }
 
-        public void taskB(){
-            try{
-                for(int i=1; i<=5; i++){
+        public void taskB() {
+            try {
+                for (int i = 1; i <= 5; i++) {
                     System.out.println(Thread.currentThread().getName() + ": " + i);
                     Thread.sleep(20L);
                 }
-            }
-            catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 System.out.println("Error.");
             }
         }
     }
 
-    static class MonitorOnCurrentClass extends NonSynchronizationMonitor{
+    static class MonitorOnCurrentClass extends NonSynchronizationMonitor {
 
         @Override
-        public synchronized void taskA(){
+        public synchronized void taskA() {
             super.taskA();
         }
 
         @Override
-        public synchronized void taskB(){
+        public synchronized void taskB() {
             super.taskB();
         }
     }
 
-    static class MonitorOnDifferentObjects extends NonSynchronizationMonitor{
+    static class MonitorOnDifferentObjects extends NonSynchronizationMonitor {
 
         private final Object lock1 = new Object();
 
         private final Object lock2 = new Object();
 
         @Override
-        public void taskA(){
-            synchronized (lock1){
+        public void taskA() {
+            synchronized (lock1) {
                 super.taskA();
             }
         }
 
         @Override
-        public void taskB(){
-            synchronized (lock2){
+        public void taskB() {
+            synchronized (lock2) {
                 super.taskB();
             }
         }
     }
 
-    static class ThreadPair{
+    static class ThreadPair {
         private final Thread threadA;
 
         private final Thread threadB;
@@ -75,13 +73,13 @@ public class Monitor {
             this.threadB = threadB;
         }
 
-        public void start(){
+        public void start() {
             threadA.start();
             threadB.start();
         }
     }
 
-    private static ThreadPair getThreadPair(NonSynchronizationMonitor nonSynchronizationMonitor){
+    private static ThreadPair getThreadPair(NonSynchronizationMonitor nonSynchronizationMonitor) {
         Thread threadA = new Thread(nonSynchronizationMonitor::taskA);
         threadA.setName(nonSynchronizationMonitor.getClass().getName().toLowerCase(Locale.ROOT) + "-A");
         Thread threadB = new Thread(nonSynchronizationMonitor::taskB);
