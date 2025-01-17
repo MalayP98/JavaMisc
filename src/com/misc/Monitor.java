@@ -1,4 +1,8 @@
+package com.misc;
+
 import java.util.Locale;
+
+import static com.misc.Utils.print;
 
 public class Monitor {
 
@@ -8,10 +12,12 @@ public class Monitor {
 
         public void taskA() {
             try {
+                print(Utils.getThreadName() + " is inside " + this.getClass().getName() + "#taskA()");
                 for (int i = 1; i <= 5; i++) {
-                    System.out.println(Thread.currentThread().getName() + ": " + i);
-                    Thread.sleep(20L);
+//                    System.out.println(Thread.currentThread().getName() + ": " + i);
+                    Thread.sleep(1000L);
                 }
+                print(Utils.getThreadName() + " has completed the taskA.");
             } catch (InterruptedException e) {
                 System.out.println("Error.");
             }
@@ -19,10 +25,12 @@ public class Monitor {
 
         public void taskB() {
             try {
+                print(Utils.getThreadName() + " is inside " + this.getClass().getName() + "#taskB()");
                 for (int i = 1; i <= 5; i++) {
-                    System.out.println(Thread.currentThread().getName() + ": " + i);
-                    Thread.sleep(20L);
+//                    System.out.println(Thread.currentThread().getName() + ": " + i);
+                    Thread.sleep(1000L);
                 }
+                print(Utils.getThreadName() + " has completed the taskB.");
             } catch (InterruptedException e) {
                 System.out.println("Error.");
             }
@@ -77,6 +85,11 @@ public class Monitor {
             threadA.start();
             threadB.start();
         }
+
+        public void join() throws InterruptedException {
+            threadA.join();
+            threadB.join();
+        }
     }
 
     private static ThreadPair getThreadPair(NonSynchronizationMonitor nonSynchronizationMonitor) {
@@ -88,17 +101,25 @@ public class Monitor {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        getThreadPair(new NonSynchronizationMonitor()).start();
+        ThreadPair tp;
+
+        tp = getThreadPair(new NonSynchronizationMonitor());
+        tp.start();
+        tp.join();
 
         Thread.sleep(1000L);
         System.out.println(SEPARATOR);
 
-        getThreadPair(new MonitorOnCurrentClass()).start();
+        tp = getThreadPair(new MonitorOnCurrentClass());
+        tp.start();
+        tp.join();
 
         Thread.sleep(1000L);
         System.out.println(SEPARATOR);
 
-        getThreadPair(new MonitorOnDifferentObjects()).start();
+        tp = getThreadPair(new MonitorOnDifferentObjects());
+        tp.start();
+        tp.join();
 
         Thread.sleep(1000L);
         System.out.println(SEPARATOR);
