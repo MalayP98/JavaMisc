@@ -1,3 +1,5 @@
+package com.misc;
+
 import java.util.*;
 
 public class StringConcatenationPerformance {
@@ -9,7 +11,6 @@ public class StringConcatenationPerformance {
             randomString = randomString.replace("_", " ");
             strList.add(randomString);
         }
-        ClassLoader loader;
         System.out.println("Concat time: " + Utils.measurePerformance(() -> stringConcat(strList)));
         System.out.println("Builder time: " + Utils.measurePerformance(() -> stringBuilder(strList)));
     }

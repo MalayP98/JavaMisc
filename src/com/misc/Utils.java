@@ -1,3 +1,7 @@
+package com.misc;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class Utils {
@@ -19,5 +23,9 @@ public class Utils {
 
     public static Integer getRandomNumber(int n) {
         return new Random().nextInt(n);
+    }
+
+    public static void print(String message){
+        System.out.println("Time: " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + " | Message: " + message);
     }
 }

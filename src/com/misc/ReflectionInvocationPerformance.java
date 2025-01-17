@@ -1,7 +1,11 @@
+package com.misc;
+
 import java.lang.*;
 
 class TestClass {
+    public TestClass(){}
     public int foo() {
+        System.out.println("Invoking com.misc.TestClass#foo()");
         return 1;
     }
 }
@@ -9,10 +13,8 @@ class TestClass {
 public class ReflectionInvocationPerformance {
 
     public static void main(String[] args) {
-        System.out.println(
-                "Reflection call: " + Utils.measurePerformance(ReflectionInvocationPerformance::reflectionInvocation) + "ms");
-        System.out.println("Reflection call: " + Utils.measurePerformance(ReflectionInvocationPerformance::normalCall) + "ms");
-
+        System.out.println("Reflection call: " + Utils.measurePerformance(ReflectionInvocationPerformance::reflectionInvocation) + "ms");
+        System.out.println("Normal call: " + Utils.measurePerformance(ReflectionInvocationPerformance::normalCall) + "ms");
     }
 
     public static void normalCall() {
@@ -22,7 +24,7 @@ public class ReflectionInvocationPerformance {
 
     public static void reflectionInvocation() {
         try {
-            Class<TestClass> cl = (Class<TestClass>) Class.forName("TestClass");
+            Class<TestClass> cl = (Class<TestClass>) Class.forName("com.misc.TestClass");
             TestClass obj = (TestClass) cl.getConstructors()[0].newInstance();
             cl.getMethod("foo").invoke(obj);
         } catch (Exception e) {
